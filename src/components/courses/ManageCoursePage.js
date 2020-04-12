@@ -1,12 +1,11 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { loadCourses } from "../../redux/actions/courseAction";
 import { loadAuthors } from "../../redux/actions/authorAction";
 
-class ManageCoursePage extends Component {
-  componentDidMount() {
-    const { courses, authors, loadAuthors, loadCourses } = this.props;
+function ManageCoursePage({ courses, authors, loadAuthors, loadCourses }) {
+  useEffect(() => {
     if (courses.length === 0) {
       loadCourses().catch((error) => {
         alert("Loading courses failed" + error);
@@ -17,14 +16,13 @@ class ManageCoursePage extends Component {
         alert("Loading authors failed" + error);
       });
     }
-  }
-  render() {
-    return (
-      <>
-        <h2>Manage course</h2>
-      </>
-    );
-  }
+  }, []);
+
+  return (
+    <>
+      <h2>Manage course</h2>
+    </>
+  );
 }
 
 function mapStateToProps(state) {
