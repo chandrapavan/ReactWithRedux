@@ -6,6 +6,7 @@ import { loadAuthors } from "../../redux/actions/authorAction";
 import CourseForm from "./CourseForm";
 import { newCourse } from "../../../tools/mockData";
 import Spinner from "../common/Spinner";
+import { toast } from "react-toastify";
 
 function ManageCoursePage({
   courses,
@@ -18,6 +19,7 @@ function ManageCoursePage({
 }) {
   const [course, setCourse] = useState({ ...props.course });
   const [errors, setErrors] = useState({});
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (courses.length === 0) {
@@ -44,7 +46,9 @@ function ManageCoursePage({
 
   const handleSave = (event) => {
     event.preventDefault();
+    setSaving(true);
     saveCourse(course).then(() => {
+      toast.success("Course Saved.");
       history.push("/courses");
     });
   };
@@ -58,6 +62,7 @@ function ManageCoursePage({
       errors={errors}
       onChange={onHandleChange}
       onSave={handleSave}
+      saving={saving}
     />
   );
 }
