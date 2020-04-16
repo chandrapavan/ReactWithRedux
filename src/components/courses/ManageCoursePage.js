@@ -43,14 +43,32 @@ function ManageCoursePage({
       [name]: name === "authorId" ? parseInt(value, 10) : value,
     }));
   };
+  const formIsValid = () => {
+    const { title, authorId, category } = course;
+    const errors = {};
+    if (!title) errors.title = "Title is required.";
+    if (!authorId) errors.author = "Author is required";
+    if (!category) errors.category = "Category is required";
+
+    setErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleSave = (event) => {
     event.preventDefault();
+    debugger;
+    if (!formIsValid()) return;
+    debugger;
     setSaving(true);
-    saveCourse(course).then(() => {
-      toast.success("Course Saved.");
-      history.push("/courses");
-    });
+    saveCourse(course)
+      .then(() => {
+        toast.success("Course Saved.");
+        history.push("/courses");
+      })
+      .catch((error) => {
+        setSaving(false);
+        setErrors({ onSave: error.message });
+      });
   };
 
   return courses.length === 0 || authors.length === 0 ? (
@@ -73,6 +91,7 @@ export function getCourseBySlug(courses, slug) {
 
 function mapStateToProps(state, ownProps) {
   const slug = ownProps.match.params.slug;
+
   const course =
     slug && state.courses.length > 0
       ? getCourseBySlug(state.courses, slug)
