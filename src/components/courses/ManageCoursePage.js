@@ -56,9 +56,7 @@ function ManageCoursePage({
 
   const handleSave = (event) => {
     event.preventDefault();
-    debugger;
     if (!formIsValid()) return;
-    debugger;
     setSaving(true);
     saveCourse(course)
       .then(() => {

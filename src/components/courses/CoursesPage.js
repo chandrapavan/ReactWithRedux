@@ -25,11 +25,13 @@ class CoursesPage extends Component {
         .catch((error) => alert("Failed loading authors" + error));
     }
   }
-  handleDeleteCourse = (course) => {
-    toast.success("Course deleted");
-    this.props.actions.deleteCourse(course).catch((error) => {
-      toast.error("Delete Failed." + error.message);
-    });
+  handleDeleteCourse = async (course) => {
+    try {
+      toast.success("Course deleted");
+      await this.props.actions.deleteCourse(course);
+    } catch (error) {
+      toast.error("Delete Failed." + error.message, { autoClose: false });
+    }
   };
 
   render() {
